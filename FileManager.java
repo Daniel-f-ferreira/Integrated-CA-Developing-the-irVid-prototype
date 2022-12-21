@@ -19,7 +19,7 @@ import java.util.logging.Logger;
 
 public class FileManager {
 
-    //Le os usuarios cadastrados a partir de um arquivo. Qualquer problema na leitura de um arquivo retorna uma lista vazia
+    //Read registered users from a file. Any problem reading a file returns an empty list
     public static LinkedList<User> readUserFromFile() {
         LinkedList<User> users = new LinkedList<User>();
 
