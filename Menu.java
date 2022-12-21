@@ -17,7 +17,7 @@ public class Menu {
     private LinkedList<Movie> movies;
     private String loggedUser;
 
-    //Inicializa as variáveis e ler os usuarios já cadastrados
+    // Initialize the variables and read the users already registered
     public Menu() {
         this.isRunning = true;
         this.isLogged = false;
@@ -27,7 +27,7 @@ public class Menu {
         loggedUser = new String();
     }
 
-    //Uma função que varre a lista de todos os usuarios cadastrados e diz se existe ou não o usuario no sistema
+    //A function that scans the list of all registered users and says whether or not the user exists in the system
     public boolean existUser(String email, String password) {
         for (int i = 0; i < users.size(); ++i) {
             if (users.get(i).getEmail().equals(email) && users.get(i).getPassword().equals(password)) {
@@ -38,12 +38,12 @@ public class Menu {
         return false;
     }
 
-    //Centralizando toda saída do console em uma única função, assim fica simples mudar caso seja necessário
+    //Centralizing all console output in a single function, so it's simple to change if necessary
     public void print(String phrase) {
         System.out.println(phrase);
     }
 
-    //Uma função que pega a opção que o usuário digitou. Recebe como entrada um limite superior, e irá printar erro se for maior que esse limite ou menor que 1
+    //A function that takes the option that the user has entered. Takes an upper limit as input, and will print an error if it is greater than this limit or less than 1
     public int getUserOption(int limit) {
         int option = 0;
 
@@ -52,13 +52,13 @@ public class Menu {
                 option = scanner.nextInt();
 
                 if (option > limit || option < 1) {
-                    print("Digite uma opção válida");
+                    print("Enter a valid option");
                 } else {
                     break;
                 }
             } catch (Exception e) {
                 scanner.nextLine();
-                print("Digite um valor valido");
+                print("Enter a valid value");
             }
 
         } while (true);
@@ -66,24 +66,23 @@ public class Menu {
         return option;
     }
 
-    //Uma função que apenas espera o usuário digitar qualquer coisa
+    //A function that just waits for the user to type anything
     public void stopScreen() {
-        print("Digite qualquer tecla para continuar...");
+        print("Type any key to continue...");
         scanner.next();
     }
 
-    //Esta e uma funcao que salva o usuario na memoria e no arquivo
+    //This is a function that saves the user in memory and in the file
     public void saveUser(User user) {
         this.users.add(user);
         FileManager.saveUserOnFile(user);
     }
 
-    //Quando a opção login for selecionada, será pedido o email e senha, e caso existe, sera feito o login, senao sera mostrada uma mensagem de erro
-    public void menuLoginOptionLogin() {
-        print("Digite o seu email: ");
+    //When the login option is selected, the email and password will be asked, and if it exists, the login will be performed, otherwise an error message will be displayed    public void menuLoginOptionLogin() {
+        print("Enter your email: ");
         String email = scanner.next();
 
-        print("Digite a senha: ");
+        print("Type the password: ");
         String password = scanner.next();
 
         if (existUser(email, password)) {
@@ -91,40 +90,40 @@ public class Menu {
             this.loggedUser = email;
 
         } else {
-            print("Usuario não encontrado...");
+            print("User not found...");
             stopScreen();
         }
     }
 
-    //Essa e a funcao de cadastrar um usuario no sistema. Se o email ja existir, sera mandada uma mensagem de erro. Senao o usuario sera cadastrado na base
+   //This is the function to register a user in the system. If the email already exists, an error message will be sent. Otherwise, the user will be registered in the base
     public void menuLoginOptionSignUp() {
-        print("Digite o seu email: ");
+        print("Enter your email: ");
         String email = scanner.next();
 
-        print("Digite a senha: ");
+        print("Type the password: ");
         String password = scanner.next();
 
         if (!existUser(email, password)) {
 
             saveUser(new User(email, password));
-            print("Usuario cadastrado com sucesso!!!");
+            print("User registered successfully!!!");
             stopScreen();
 
         } else {
-            print("Usuario ja existe no sistema...");
+            print("User already exists in the system...");
             stopScreen();
         }
 
     }
 
-    //Esse e o menu que esta a tela de login. Sera dada a opcao ao usuario de cadastro e login, ou sair do sistema
+    //This is the menu that is the login screen. The user will be given the option of registering and logging in, or leaving the system.
     public void menuLogin() {
 
-        print("Olá, seja bem vindo!");
-        print("Digite uma opção abaixo: ");
+        print("Hello welcome!");
+        print("Enter an option below: ");
         print("1 - Login");
-        print("2 - Cadastrar");
-        print("3 - Sair");
+        print("2 - Register");
+        print("3 - Exit");
 
         int option = getUserOption(3);
 
@@ -144,10 +143,10 @@ public class Menu {
         }
     }
 
-    //Essa é a função que aluga um filme. Se o filme já estiver alugado, é soltado uma mensagem de erro para o usuário;
+    // This is the function that rented a movie. If the movie is already rented, an error message is displayed to the user;
     public void menuPrincialOption1RentMovie() {
 
-        print("Digite o nome  do filme que voce deseja alugar: ");
+        print("Enter the name of the movie you want to rent: ");
         String movieName = scanner.nextLine();
 
         for (int i = 0; i < movies.size(); ++i) {
@@ -156,13 +155,13 @@ public class Menu {
 
                 for (int j = 0; j < movies.get(i).getRents().size(); ++j) {
                     if (movies.get(i).getRents().get(j).getEmailUserRent().equals(loggedUser)) {
-                        print("O filme já está alugado!!!!");
+                        print("The movie is already rented!!!!");
                         return;
                     }
 
                 }
 
-                print("Filme alugado com sucesso!!!");
+                print("Successfully rented movie!!!");
                 movies.get(i).getRents().add(new Rent(System.currentTimeMillis(), loggedUser));
                 movies.get(i).setTotalRents(movies.get(i).getTotalRents() + 1);
                 return;
@@ -170,20 +169,20 @@ public class Menu {
             }
         }
 
-        print("O filme não existe!!!");
+        print("The movie doesn't exist!!!");
 
     }
 
-    //Essa função mostra todos os filmes alugados pelo usuário
+    //This function shows all movies rented by the user
     public void menuPrincialOption2SeeRentMovie() {
 
-        print("Seus filmes alugados: ");
+        print("Your rented movies: ");
         for (int i = 0; i < movies.size(); ++i) {
 
             for (int j = 0; j < movies.get(i).getRents().size(); ++j) {
                 if (movies.get(i).getRents().get(j).getEmailUserRent().equals(loggedUser)) {
                     print(movies.get(i).getTitle());
-                    print("Preco: " + movies.get(i).getPrice());
+                    print("Price: " + movies.get(i).getPrice());
 
                 }
 
@@ -193,10 +192,10 @@ public class Menu {
 
     }
 
-    //Essa função faz a recomendação dos 5 filmes mais alugados. Usa uma função para ordenar o total de alugueis e depois pega os 5 primeiros
+    //This function recommends the 5 most rented movies. Use a function to sort the total rents and then get the top 5
     public void menuPrincialOption3BestMovie() {
 
-        print("Filmes mais alugados: ");
+        print("Most rented movies: ");
         Collections.sort(this.movies);
 
         for (int i = movies.size() - 1; i >= 0; --i) {
@@ -207,16 +206,16 @@ public class Menu {
 
     }
 
-    //Essa função mostra os filmes alugados pelo usuário e também faz a devolução caso o tempo de aluguel seja maior que 60000 ms ou 1 minuto
+    //This function shows the movies rented by the user and also returns them if the rental time is greater than 60000 ms or 1 minute
     public void menuPrincialOption4AReturnRentMovie() {
 
-        print("Filmes alugados: ");
+        print("Rented Movies: ");
         for (int i = 0; i < movies.size(); ++i) {
 
             for (int j = 0; j < movies.get(i).getRents().size(); ++j) {
                 if (movies.get(i).getRents().get(j).getEmailUserRent().equals(loggedUser)) {
                     print(movies.get(i).getTitle());
-                    print("Preco: " + movies.get(i).getPrice());
+                    print("Price: " + movies.get(i).getPrice());
 
                 }
 
@@ -224,7 +223,7 @@ public class Menu {
 
         }
 
-        print("Filmes devolvidos: ");
+        print("Returned movies: ");
 
         for (int i = 0; i < movies.size(); ++i) {
 
@@ -240,13 +239,13 @@ public class Menu {
     }
 
     public void menuPrincipal() {
-        print("Ola, seja bem vindo a nossa Locadora!!!");
-        print("Para continuar, digite uma das opcoes abaixo: ");
-        print("1 - Alugar um filme");
-        print("2 - Ver os filmes alugados");
-        print("3 - Ver recomendações de filme");
-        print("4 - Devolver filme");
-        print("5 - Sair");
+        print("Hello, welcome to our rental company!!!");
+        print("To continue, enter one of the options below: ");
+        print("1 - Rent a Movie");
+        print("2 -View rented movies");
+        print("3 - View movie recommendations");
+        print("4 - return film");
+        print("5 - Exit");
         int option = getUserOption(5);
 
         switch (option) {
