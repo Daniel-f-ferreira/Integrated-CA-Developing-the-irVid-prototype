@@ -3,7 +3,7 @@ package com.locadora.locadora.Models;
 import java.util.LinkedList;
 
 public class Movie implements Comparable<Movie> {
-
+// list 
     private boolean adult;
     private BelongToCollection belongsToCollection;
     private int budget;
